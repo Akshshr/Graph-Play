@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FillGraphActivity"></activity>
+        <activity android:name=".FillGraphActivity" />
+        <activity android:name=".LineGraphActivity"></activity>
     </application>
 
 </manifest>
