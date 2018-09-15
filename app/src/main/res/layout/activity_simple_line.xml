@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout>
     <data>
         <variable
-            name="testo"
+            name="test"
             type="String"/>
     </data>
 
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:gravity="center"
     android:layout_height="match_parent"
-    tools:context="com.android.graphplay.LineGraphActivity">
+    tools:context="com.android.graphplay.SimpleLineActivity">
 
-
-    <com.android.graphplay.widget.LineGraph
+    <com.android.graphplay.widget.SimpleLineGraph
         android:id="@+id/graph"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -26,8 +22,10 @@
         android:layout_marginBottom="16dp"
         android:clipChildren="false"
         android:clipToPadding="false">
-    </com.android.graphplay.widget.LineGraph>
+
+    </com.android.graphplay.widget.SimpleLineGraph>
 
 </LinearLayout>
+
 
 </layout>

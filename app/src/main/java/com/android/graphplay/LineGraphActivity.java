@@ -56,8 +56,7 @@ public class LineGraphActivity extends AppCompatActivity {
         dataList.add(nestedList);
         dataList.add(nestedList1);
 
-
-
+        binding.graph.showOverLayLable(true);
         binding.graph.setData(dataList);
 
     }

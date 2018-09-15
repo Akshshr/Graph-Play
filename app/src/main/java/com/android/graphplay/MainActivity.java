@@ -40,8 +40,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    }
+        binding.simplelineGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SimpleLineActivity.class));
+            }
+        });
 
+
+
+    }
 
 
 }

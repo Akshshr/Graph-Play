@@ -23,7 +23,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.graphplay.R;
@@ -36,18 +35,20 @@ import java.util.ArrayList;
  * Created by akashshrivatava on 9/12/18.
  */
 
-public class FillGraph extends FrameLayout {
+public class SimpleLineGraph extends FrameLayout {
 
     private View scrollContentView;
     private Paint linePaint;
     private Paint graphPaint;
     private Paint xAxisLinePaint;
     private Path graphPath = new Path();
-    public ArrayList<GraphValue> graphData;
-    public ArrayList<ArrayList<FillGraph.GraphValue>> dataList;
     Bitmap glowMarkerCircle;
 
-    //Overlay and hover views
+    private boolean showLable = false;
+
+    public ArrayList<ArrayList<SimpleLineGraph.GraphValue>> dataList;
+    public ArrayList<GraphValue> graphData;
+
     private TextView overlayTextView;
     private GestureDetector singleTapListener;
     private boolean selectedAtTouchStart = false;
@@ -56,23 +57,26 @@ public class FillGraph extends FrameLayout {
     private View overlayGraphPointer;
     private float overlayOffsetY;
     private float overlayOffsetX;
+
     private PointF overlayPreviousPosition;
-    private boolean showLable = false;
 
 
-    public FillGraph(@NonNull Context context) {
+    private PointF point;
+
+
+    public SimpleLineGraph(@NonNull Context context) {
         super(context);
         init();
 
     }
 
-    public FillGraph(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public SimpleLineGraph(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
 
     }
 
-    public FillGraph(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SimpleLineGraph(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -87,7 +91,7 @@ public class FillGraph extends FrameLayout {
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(Util.dpToPx(getContext(), 2.5f));
-        linePaint.setColor(Color.WHITE);
+
         linePaint.setPathEffect(new CornerPathEffect(Util.dpToPx(getContext(), 40)));
         linePaint.setStrokeJoin(Paint.Join.ROUND);
         linePaint.setStrokeCap(Paint.Cap.ROUND);
@@ -101,7 +105,6 @@ public class FillGraph extends FrameLayout {
 
         graphPaint = new Paint(linePaint);
         graphPaint.setStyle(Paint.Style.FILL);
-
 
         overlayOffsetX = -Util.dpToPx(getContext(), 28);
         overlayOffsetY = -Util.dpToPx(getContext(), 22);
@@ -145,22 +148,38 @@ public class FillGraph extends FrameLayout {
         });
     }
 
+    public void showOverLayLable(boolean showLable){
+        this.showLable = showLable;
+    }
+
+    public void clearTouchedSegment() {
+        invalidate();
+        overlayTextView.animate().alpha(0).setDuration(200).start();
+        overlayGraphPointer.animate().alpha(0).setDuration(200).start();
+    }
+
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        scrollContentView.setLayoutParams(new ScrollView.LayoutParams(
+        scrollContentView.setLayoutParams(new LayoutParams(
                 w * 10,
                 ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
-    public void setData(ArrayList<ArrayList<FillGraph.GraphValue>> dataList) {
+    public void setData(ArrayList<ArrayList<SimpleLineGraph.GraphValue>> dataList) {
         this.dataList = dataList;
         invalidate();
     }
 
-    public void showOverLayLable(boolean showLable){
-        this.showLable = showLable;
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        requestDisallowInterceptTouchEvent(true);
+        getParent().requestDisallowInterceptTouchEvent(true);
+        // Let's not allow parents to steal our touch
+        return true;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -215,12 +234,6 @@ public class FillGraph extends FrameLayout {
     }
 
 
-    public void clearTouchedSegment() {
-        invalidate();
-        overlayTextView.animate().alpha(0).setDuration(200).start();
-        overlayGraphPointer.animate().alpha(0).setDuration(200).start();
-    }
-
 
     @SuppressLint("DrawAllocation")
     @Override
@@ -247,14 +260,6 @@ public class FillGraph extends FrameLayout {
                 value = graphData.get(i);
                 graphPath.lineTo((float) value.x, (float) value.y);
 
-//              Circle at every point
-//                canvas.drawCircle(
-//                        (int) value.x, (int) value.y, 10, linePaint);
-
-
-                //Bitmap..
-//                canvas.drawBitmap(glowMarkerCircle, (int) value.x, (int) value.y, linePaint);
-
             }
 
             //Extra Helper lines to round the Gradient effect...
@@ -263,33 +268,18 @@ public class FillGraph extends FrameLayout {
             graphPath.lineTo(-50, height + 50);
             graphPath.lineTo(-50, (float) graphData.get(0).y);
 
-            //First and last helper circles
-            //Starting Circles
-//            canvas.drawCircle(
-//                    0, (int) graphData.get(0).y, 16, linePaint);
-
-//            Ending circles
-//            canvas.drawCircle(
-//                    width, (int) graphData.get(graphData.size() - 1).y, 16, linePaint);
-
-            graphPath.close();
             canvas.clipRect(0, 0, width, height);
 
-            int color = graphData.get(0).color;
-            int transparent = Color.argb(180, Color.red(color), Color.green(color), Color.blue(color));
+            linePaint.setColor(graphData.get(0).color);
 
+            linePaint.setShadowLayer(6, 0, 4, Color.BLACK);
 
-            graphPaint.setShader(new LinearGradient(0, getHeight(), 0, 0,
-                    transparent,transparent, Shader.TileMode.MIRROR));
-
-            canvas.drawPath(graphPath, graphPaint);
+            canvas.drawPath(graphPath, linePaint);
             canvas.save();
 
 
         }
     }
-
-
 
     public static class GraphValue {
         public final double x; // in our specific case, is the millis time slot

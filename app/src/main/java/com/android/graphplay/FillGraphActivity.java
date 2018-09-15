@@ -47,6 +47,8 @@ public class FillGraphActivity extends AppCompatActivity {
         nestedList.add(new FillGraph.GraphValue(300.0f, 550,graphColor1));
         nestedList.add(new FillGraph.GraphValue(400.0f, 450,graphColor1));
         nestedList.add(new FillGraph.GraphValue(500.0f, 350,graphColor1));
+        nestedList.add(new FillGraph.GraphValue(620.0f, 150,graphColor1));
+        nestedList.add(new FillGraph.GraphValue(700.0f, 350,graphColor1));
 
         ArrayList<FillGraph.GraphValue> nestedList1= new ArrayList<>();
         nestedList1.add(new FillGraph.GraphValue(140.0f, 250,graphColor2 ));
@@ -57,8 +59,7 @@ public class FillGraphActivity extends AppCompatActivity {
         dataList.add(nestedList);
         dataList.add(nestedList1);
 
-
-
+        binding.graph.showOverLayLable(true);
         binding.graph.setData(dataList);
 
     }
