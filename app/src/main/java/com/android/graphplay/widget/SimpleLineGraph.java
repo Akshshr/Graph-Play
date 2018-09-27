@@ -268,14 +268,21 @@ public class SimpleLineGraph extends FrameLayout {
             graphPath.lineTo(-50, height + 50);
             graphPath.lineTo(-50, (float) graphData.get(0).y);
 
-            canvas.clipRect(0, 0, width, height);
+//            graphPath.close();
+//            canvas.clipRect(0, 0, width, height);
 
             linePaint.setColor(graphData.get(0).color);
-
             linePaint.setShadowLayer(6, 0, 4, Color.BLACK);
 
+//            int color = graphData.get(0).color;
+//            int transparent = Color.argb(40, Color.red(color), Color.green(color), Color.blue(color));
+//            graphPaint.setShader(new LinearGradient(0, getHeight(), 0, 0,
+//                    transparent, transparent, Shader.TileMode.MIRROR));
+
+//            canvas.drawPath(graphPath, graphPaint);
             canvas.drawPath(graphPath, linePaint);
             canvas.save();
+
 
 
         }

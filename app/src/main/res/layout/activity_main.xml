@@ -37,25 +37,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        style="@style/AppWidget.Button"
         android:id="@+id/fillGraph"
         android:text="Fill Graph"
-        android:padding="@dimen/d22"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
+        android:layout_margin="@dimen/d4"
         android:layout_height="wrap_content" />
 
     <Button
+        style="@style/AppWidget.Button"
         android:id="@+id/lineGraph"
         android:text="Line Graph"
-        android:padding="@dimen/d22"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
+        android:layout_margin="@dimen/d4"
         android:layout_height="wrap_content" />
 
 
     <Button
+        style="@style/AppWidget.Button"
         android:id="@+id/simplelineGraph"
         android:text="Simple Line Graph"
-        android:padding="@dimen/d22"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
+        android:layout_margin="@dimen/d4"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
